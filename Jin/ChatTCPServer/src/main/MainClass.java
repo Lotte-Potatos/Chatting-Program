@@ -8,7 +8,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.Vector;
 
+import dto.ChatRoom;
 import threadex.ServerThread;
 
 public class MainClass {
@@ -19,6 +23,8 @@ public class MainClass {
 		 * TCP : Transmission Control Protocol
 		 */
 		Socket clientSocket = null;
+		List<String> userIdList = new ArrayList<String>();
+		Vector<ChatRoom> chatList = new Vector<ChatRoom>();
 
 		try {
 
@@ -38,7 +44,7 @@ public class MainClass {
 				System.out.println("client IP: " + clientSocket.getInetAddress()
 						+ "Port : " + clientSocket.getPort());
 
-				new ServerThread(clientSocket, list).start();
+				new ServerThread(clientSocket, list, userIdList, chatList).start();
 
 			}
 

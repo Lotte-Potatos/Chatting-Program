@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,15 +14,17 @@ import net.WriteClass;
 
 // ID 입력받기 위한 Form
 public class IdFrame extends JFrame implements ActionListener {
-	public static TextField tf = new TextField(8);
+	public static TextField textIdInput = new TextField(8);
 
 	JButton btn = new JButton("등록");
+	JLabel label2;
 
 	ClientFrame cf;
 	ClientRoomFrame crf;
 
 	// WriteClass 추가
 	WriteClass wc;
+	List<String> clientList = WriteClass.clientList;
 
 	public IdFrame(ClientFrame cf, ClientRoomFrame crf) {
 		this.cf = cf;
@@ -35,8 +38,13 @@ public class IdFrame extends JFrame implements ActionListener {
 		label.setBounds(50, 60, 30, 30);
 		add(label);
 
-		tf.setBounds(80, 60, 100, 30);
-		add(tf);
+		textIdInput.setBounds(80, 60, 100, 30);
+		add(textIdInput);
+
+		label2 = new JLabel("다른 id를 입력하세요");
+		label2.setBounds(50, 20, 30, 30);
+		add(label2);
+		label2.setVisible(false);
 
 		btn.setBounds(80, 110, 100, 30);
 		btn.addActionListener(this);
@@ -52,15 +60,22 @@ public class IdFrame extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		// id 전송
-		wc.sendMessage("");
-
-		// 첫번째 전송
+		wc.sendId(textIdInput.getText());
+		
+//		boolean idCheck = 
+//		if (!idCheck) {
+//			label2.setVisible(true);
+//		} else {
+			label2.setVisible(false);
+			// 첫번째 전송
 //		cf.isFirst = false;
 
-		// ClientFrame을 시각화
-		cf.setVisible(true);
+			// ClientFrame을 시각화
+			cf.setVisible(true);
 
-		// 현재창 close
-		this.dispose();
+			// 현재창 close
+			this.dispose();
+//		}
+
 	}
 }

@@ -20,7 +20,6 @@ public class MainClass {
 			new ReadThread(socket, cf).start();
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

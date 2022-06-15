@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +22,8 @@ public class ClientRoomFrame extends JFrame implements WindowListener, ActionLis
 
 	public Socket socket;
 	WriteClass wc;
+	
+	public static String roomName = "";
 
 	public JTextField textInput = new JTextField(20);
 	public JTextArea textChatArea = new JTextArea();
@@ -30,12 +33,10 @@ public class ClientRoomFrame extends JFrame implements WindowListener, ActionLis
 
 	JPanel panel = new JPanel();
 
-	String roomName = "";
-
 	public boolean isFirst = true; // 첫번째 전송
 
-	public ClientRoomFrame(Socket socket, String roomName) {
-		super("chatting"); // 타이틀 , = setTitle();
+	public ClientRoomFrame(Socket socket) {
+		super("chatting room: " + roomName); // 타이틀 , = setTitle();
 
 		this.socket = socket;
 		this.wc = new WriteClass(socket, this);
@@ -47,12 +48,21 @@ public class ClientRoomFrame extends JFrame implements WindowListener, ActionLis
 
 		panel.add(textInput);
 		panel.add(btnTransfer);
+
+		btnExit.setBackground(Color.LIGHT_GRAY);
+
 		panel.add(btnExit);
 
 		add("South", panel);
 
 		btnTransfer.addActionListener(this);
-		btnExit.addActionListener(this);
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				textChatArea.setText("");
+				textInput.setText("");
+				setVisible(false);
+			}
+		});
 
 		setBounds(400, 300, 450, 600);
 
@@ -64,11 +74,11 @@ public class ClientRoomFrame extends JFrame implements WindowListener, ActionLis
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
 
-		if (obj == btnTransfer || obj == textInput) {
+		if (obj == btnTransfer) { // || obj == textInput
 			if (textInput.getText().trim().equals(""))
 				return;
 
-			String id = IdFrame.tf.getText();
+			String id = IdFrame.textIdInput.getText();
 
 			textChatArea.append("[" + id + "]" + textInput.getText() + "\n");
 
@@ -94,7 +104,8 @@ public class ClientRoomFrame extends JFrame implements WindowListener, ActionLis
 	@Override
 	public void windowClosed(WindowEvent e) {
 		// TODO Auto-generated method stub
-		System.exit(0);
+		textChatArea.setText("");
+		setVisible(false);
 
 	}
 

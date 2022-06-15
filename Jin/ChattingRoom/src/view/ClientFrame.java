@@ -8,7 +8,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.net.Socket;
-import java.util.Set;
+import java.util.List;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,6 +22,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import dto.ChatRoom;
+import net.ReadThread;
 import net.WriteClass;
 
 // 채팅 form
@@ -28,60 +31,74 @@ public class ClientFrame extends JFrame implements WindowListener, ActionListene
 
 	public Socket socket;
 	WriteClass wc;
-	ClientRoomFrame crf;
-
-//	public JTextField roomTitleInput = new JTextField(20);
-//	public JTextArea textA = new JTextArea();
-//
-//	JButton btnTransfer = new JButton("send");
-//	JButton btnExit = new JButton("exit");
-//
-//	JPanel panel = new JPanel();
+	public ClientRoomFrame crf;
+	List<String> clientList = WriteClass.clientList;
 
 	JTable table1, table2;
-	DefaultTableModel model1, model2;
+	public DefaultTableModel model1, model2;
 	JTextField textRoomNameInput;
 	JTextArea textArea;
-	JButton btnCreateRoom, btnExit;
+	JButton btnCreateRoom, btnEnter;
 	JScrollBar bar;
 
-	Set<String> clientList = WriteClass.clientList;
-
-//	public boolean isFirst = true; // 첫번째 전송
+	public static String roomName = "";
 
 	public ClientFrame(Socket socket) {
 		super("로비"); // 타이틀 , = setTitle();
 
 		this.socket = socket;
+		this.wc = new WriteClass(socket, this);
+
+		crf = new ClientRoomFrame(socket);
 
 		new IdFrame(this, crf);
 
 		String[] col1 = { "방이름", "ID" };
 		String[][] row1 = new String[0][2];
 
-		model1 = new DefaultTableModel(row1, col1);
+		model1 = new DefaultTableModel(row1, col1) {
+			public boolean isCellEditable(int rowIndex, int mColIndex) {
+				return false;
+			}
+		};
+
 		table1 = new JTable(model1);
+
+		table1.getTableHeader().setReorderingAllowed(false);
+		table1.getTableHeader().setResizingAllowed(false);
+
 		JScrollPane roomsPane = new JScrollPane(table1);
 
 		textRoomNameInput = new JTextField();
+		roomName = textRoomNameInput.getText();
 
 		btnCreateRoom = new JButton("방 만들기");
 		btnCreateRoom.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				crf = new ClientRoomFrame(socket, textRoomNameInput.getText());
+				if (textRoomNameInput.getText().trim().equals(""))
+					return;
+				ClientRoomFrame.roomName = textRoomNameInput.getText();
+				crf.setTitle("chatting room: " + ClientRoomFrame.roomName);
+				wc.sendRoomInfo(ClientRoomFrame.roomName, 1); // 1 = 아마도 새방
+				textRoomNameInput.setText("");
 				crf.setVisible(true);
 			}
 		});
-		
-		btnExit = new JButton("나가기");
-		btnExit.addActionListener(new ActionListener() {
+
+		btnEnter = new JButton("입장");
+		btnEnter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
+				int row = table1.getSelectedRow();
+				if (row == -1) {
+					return;
+				}
+				ClientRoomFrame.roomName = table1.getModel().getValueAt(row, 0).toString();
+				crf.setTitle("chatting room: " + ClientRoomFrame.roomName);
+				wc.sendRoomInfo(ClientRoomFrame.roomName, 0); // 0 = 입장
+				textRoomNameInput.setText("");
+				crf.setVisible(true);
 			}
 		});
-		
-		btnCreateRoom.setBackground(Color.gray);
-		btnExit.setBackground(Color.gray);
 
 		// 배치
 		setLayout(null);
@@ -95,7 +112,7 @@ public class ClientFrame extends JFrame implements WindowListener, ActionListene
 		buttonPanel.setLayout(new GridLayout(1, 2, 20, 20));
 
 		buttonPanel.add(btnCreateRoom);
-		buttonPanel.add(btnExit);
+		buttonPanel.add(btnEnter);
 		buttonPanel.setBounds(10, 460, 300, 50);
 		add(buttonPanel);
 
