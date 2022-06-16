@@ -6,9 +6,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
-import dto.ChatRoom;
 import view.ClientFrame;
 import view.ClientRoomFrame;
 import view.IdFrame;
