@@ -41,8 +41,6 @@ public class WriteClass {
 				InetAddress iaddr = socket.getLocalAddress();
 				String ip = iaddr.getHostAddress(); // xxx.xxx.xxx.xxx
 
-				clientList.add(id);
-
 				msg = "[" + id + "]님 로그인(" + ip + ")";
 
 			}

@@ -61,6 +61,29 @@ public class ReadThread extends Thread {
 					System.out.println("접속끊김");
 				}
 
+				// 채팅방 목록 테이블에 추가
+				cf.model1.setRowCount(0);
+				if (!chatList.isEmpty()) {
+					for (ChatRoom cr : chatList) {
+
+						cf.model1.addRow(new Object[] { cr.getRoomName(), cr.getUserlistToString() });
+
+					}
+				}
+
+				// 접속중인 id 테이블에 추가
+				cf.model2.setRowCount(0);
+				if (!clientList.isEmpty()) {
+					for (String s : clientList) {
+						cf.model2.addRow(new Object[] { s });
+					}
+				}
+
+				readRecieve(str);
+
+				Thread.sleep(300);
+
+				// 채팅방 목록 변경된 사항 포함해서 테이블에 추가
 				cf.model1.setRowCount(0);
 
 				if (!chatList.isEmpty()) {
@@ -71,7 +94,14 @@ public class ReadThread extends Thread {
 					}
 				}
 
-				readRecieve(str);
+				// 접속중인 id 테이블에 추가
+				cf.model2.setRowCount(0);
+				if (!clientList.isEmpty()) {
+					for (String s : clientList) {
+						cf.model2.addRow(new Object[] { s });
+						System.out.println(s);
+					}
+				}
 
 				Thread.sleep(300);
 			}
@@ -92,12 +122,16 @@ public class ReadThread extends Thread {
 		String roomName = "";
 		String id = "";
 
-//		if(protocol == Code.INIT) {
-//			return;
-//		}
-
-		if (!clientList.contains(myId)) {
-			clientList.add(myId);
+		if (protocol == Code.INIT) {
+		
+//			if (st.hasMoreTokens()) {
+//				StringTokenizer stk = new StringTokenizer(st.nextToken(), ",");
+//
+//				while (stk.hasMoreTokens()) {
+//					clientList.add(st.nextToken());
+//				}
+//			}
+			return;
 		}
 
 		switch (protocol) {
@@ -106,6 +140,10 @@ public class ReadThread extends Thread {
 			clientList.add(id);
 			while (st.hasMoreTokens()) {
 				result += st.nextToken();
+			}
+			if (!clientList.contains(id)) {
+
+				clientList.add(id);
 			}
 			break;
 		case Code.MSG:

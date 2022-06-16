@@ -80,7 +80,7 @@ public class ClientRoomFrame extends JFrame implements WindowListener, ActionLis
 
 			String id = IdFrame.textIdInput.getText();
 
-			textChatArea.append("[" + id + "]" + textInput.getText() + "\n");
+//			textChatArea.append("[" + id + "]" + textInput.getText() + "\n");
 
 			// server 전송
 			wc.sendMessage(roomName);

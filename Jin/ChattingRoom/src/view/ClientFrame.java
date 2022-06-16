@@ -60,8 +60,23 @@ public class ClientFrame extends JFrame implements WindowListener, ActionListene
 
 		table1.getTableHeader().setReorderingAllowed(false);
 		table1.getTableHeader().setResizingAllowed(false);
+		
+		String[] col2 = { "접속중인 id"};
+		String[][] row2 = new String[0][1];
+		
+		model2 = new DefaultTableModel(row2, col2) {
+			public boolean isCellEditable(int rowIndex, int mColIndex) {
+				return false;
+			}
+		};
+
+		table2 = new JTable(model2);
+
+		table2.getTableHeader().setReorderingAllowed(false);
+		table2.getTableHeader().setResizingAllowed(false);
 
 		JScrollPane roomsPane = new JScrollPane(table1);
+		JScrollPane usersPane = new JScrollPane(table2);
 
 		textRoomNameInput = new JTextField();
 		roomName = textRoomNameInput.getText();
@@ -73,6 +88,8 @@ public class ClientFrame extends JFrame implements WindowListener, ActionListene
 					return;
 				ClientRoomFrame.roomName = textRoomNameInput.getText();
 				crf.setTitle("chatting room: " + ClientRoomFrame.roomName);
+				crf.textChatArea.setText("");
+				crf.textInput.setText("");
 				wc.sendRoomInfo(ClientRoomFrame.roomName, 1); // 1 = 아마도 새방
 				textRoomNameInput.setText("");
 				crf.setVisible(true);
@@ -88,6 +105,8 @@ public class ClientFrame extends JFrame implements WindowListener, ActionListene
 				}
 				ClientRoomFrame.roomName = table1.getModel().getValueAt(row, 0).toString();
 				crf.setTitle("chatting room: " + ClientRoomFrame.roomName);
+				crf.textChatArea.setText("");
+				crf.textInput.setText("");
 				wc.sendRoomInfo(ClientRoomFrame.roomName, 0); // 0 = 입장
 				textRoomNameInput.setText("");
 				crf.setVisible(true);
@@ -96,8 +115,11 @@ public class ClientFrame extends JFrame implements WindowListener, ActionListene
 
 		// 배치
 		setLayout(null);
-		roomsPane.setBounds(10, 15, 300, 400);
+		roomsPane.setBounds(10, 15, 300, 300);
 		add(roomsPane);
+		
+		usersPane.setBounds(10, 315, 300, 100);
+		add(usersPane);
 
 		textRoomNameInput.setBounds(10, 420, 300, 30);
 		add(textRoomNameInput);
