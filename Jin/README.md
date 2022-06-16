@@ -24,6 +24,29 @@ id를 등록하고 전체 채팅방 로비에 입장할 수 있다. <br>
 - 채팅방 입장
 - 같은 채팅방 내 사용자끼리의 채팅 기능
 
+## 구현 방식
+
+수업 시간에 진행한 TCP Server와 GUIClient를 토대로 수정하며 제작했다. <br>
+
+### 서버와 클라이언트간의 프로토콜
+
+Code는 다음과 같이 통일시켜 사용했다.
+
+<br>
+
+| CodeName | Code |
+| :---: | :---: |
+| LOGIN | 1010 |
+| MSG | 2020 |
+| CHATROOM | 3030 |
+
+<br>
+
+`Code | roomName | id | msg` 의 형태로 통신하며, <br>
+Server(ServerThread - readRecieve())와 Client(ReadThread - readRecieve())에서 
+각각 코드에 따른 처리를 진행한다.
+
+
 <br>
 
 ## 개선이 필요한 점
