@@ -84,7 +84,7 @@ public class ClientFrame extends JFrame implements WindowListener, ActionListene
 		textRoomNameInput = new JTextField();
 		roomName = textRoomNameInput.getText();
 
-		btnCreateRoom = new JButton("방 만들기");
+		btnCreateRoom = new JButton("방 생성");
 //		btnCreateRoom.setBackground(new Color(242, 209, 209));
 		btnCreateRoom.setBorderPainted(false);
 		btnCreateRoom.addActionListener(new ActionListener() {
