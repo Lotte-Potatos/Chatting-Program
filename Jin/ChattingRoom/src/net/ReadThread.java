@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -28,23 +29,6 @@ public class ReadThread extends Thread {
 	public ReadThread(Socket socket, ClientFrame cf) {
 		this.socket = socket;
 		this.cf = cf;
-//		init();
-	}
-
-	public void init() {
-		try {
-			PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
-
-			int protocol = Code.INIT;
-			String result = protocol + "|";
-
-			// server로 전송
-			pw.println(result);
-			pw.flush();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
@@ -61,11 +45,12 @@ public class ReadThread extends Thread {
 					System.out.println("접속끊김");
 				}
 
+				System.out.println("run str : " + str);
+
 				// 채팅방 목록 테이블에 추가
 				cf.model1.setRowCount(0);
 				if (!chatList.isEmpty()) {
 					for (ChatRoom cr : chatList) {
-
 						cf.model1.addRow(new Object[] { cr.getRoomName(), cr.getUserlistToString() });
 
 					}
@@ -78,6 +63,8 @@ public class ReadThread extends Thread {
 						cf.model2.addRow(new Object[] { s });
 					}
 				}
+
+				Thread.sleep(300);
 
 				readRecieve(str);
 
@@ -99,7 +86,6 @@ public class ReadThread extends Thread {
 				if (!clientList.isEmpty()) {
 					for (String s : clientList) {
 						cf.model2.addRow(new Object[] { s });
-						System.out.println(s);
 					}
 				}
 
@@ -123,14 +109,96 @@ public class ReadThread extends Thread {
 		String id = "";
 
 		if (protocol == Code.INIT) {
-		
-//			if (st.hasMoreTokens()) {
-//				StringTokenizer stk = new StringTokenizer(st.nextToken(), ",");
-//
-//				while (stk.hasMoreTokens()) {
-//					clientList.add(st.nextToken());
-//				}
-//			}
+
+			String users = st.nextToken();
+			StringTokenizer stk = new StringTokenizer(users, ",");
+
+			while (stk.hasMoreTokens()) {
+				String newId = stk.nextToken();
+				if (!clientList.contains(newId)) {
+
+					clientList.add(newId);
+				}
+			}
+
+			return;
+		}
+
+		if (protocol == Code.INITCHATROOM) {
+			roomName = st.nextToken();
+			String users = st.nextToken();
+			StringTokenizer stk = new StringTokenizer(users, ",");
+
+			List<String> temp = new ArrayList<String>();
+			while (stk.hasMoreTokens()) {
+				String newId = stk.nextToken();
+				System.out.println("newId: " + newId);
+				temp.add(newId);
+			}
+
+			ChatRoom cr = new ChatRoom(roomName, temp);
+			chatList.add(cr);
+
+			return;
+		}
+
+		if (protocol == Code.EXIT) {
+
+			String exitId = st.nextToken();
+
+			if (clientList.contains(exitId)) {
+				clientList.remove(exitId);
+			}
+
+			for (ChatRoom cr : chatList) {
+				List<String> temp = new ArrayList<String>();
+				temp = cr.getUserlist();
+				if (temp.contains(exitId)) {
+					temp.remove(exitId);
+					cr.setUserlist(temp);
+					chatList.set(chatList.indexOf(cr), cr);
+				}
+			}
+
+			Iterator<ChatRoom> iter = chatList.iterator();
+			while (iter.hasNext()) {
+				ChatRoom cr = iter.next();
+				if (cr.getUserlist().isEmpty() || cr.getUserlist().size() == 0) {
+					iter.remove();
+				}
+			}
+
+			return;
+		}
+
+		if (protocol == Code.EXITROOM) {
+
+			String exitRoomName = st.nextToken();
+
+			String exitId = st.nextToken();
+
+			for (ChatRoom cr : chatList) {
+				List<String> temp1 = new ArrayList<String>();
+
+				if (cr.getRoomName().equals(exitRoomName)) {
+					temp1 = cr.getUserlist();
+					if (temp1.contains(exitId)) {
+						temp1.remove(exitId);
+						cr.setUserlist(temp1);
+						chatList.set(chatList.indexOf(cr), cr);
+					}
+				}
+
+			}
+
+			Iterator<ChatRoom> iter = chatList.iterator();
+			while (iter.hasNext()) {
+				ChatRoom cr = iter.next();
+				if (cr.getUserlist().isEmpty() || cr.getUserlist().size() == 0) {
+					iter.remove();
+				}
+			}
+
 			return;
 		}
 

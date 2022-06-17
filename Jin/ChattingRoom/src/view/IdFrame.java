@@ -33,6 +33,7 @@ public class IdFrame extends JFrame implements ActionListener {
 
 		setTitle("ID input");
 		setLayout(null);
+//		this.getContentPane().setBackground(new Color(198, 220, 228));
 
 		JLabel label = new JLabel("id:");
 		label.setBounds(50, 60, 30, 30);
@@ -47,6 +48,8 @@ public class IdFrame extends JFrame implements ActionListener {
 		label2.setVisible(false);
 
 		btn.setBounds(80, 110, 100, 30);
+//		btn.setBackground(new Color(255, 230, 230));
+		btn.setBorderPainted(false);
 		btn.addActionListener(this);
 		add(btn);
 

@@ -112,6 +112,50 @@ public class WriteClass {
 			e.printStackTrace();
 		}
 	}
+	
+	public void Exit() {
+		try {
+			PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
+
+			String msg = "";
+			String id = IdFrame.textIdInput.getText();
+
+			protocol = Code.EXIT;
+
+			String result = toSend(msg, id, "");
+
+			// server로 전송
+			pw.println(result);
+			pw.flush();
+
+		} catch (
+
+		IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void ExitRoom(String roomName) {
+		try {
+			PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
+
+			String msg = "";
+			String id = IdFrame.textIdInput.getText();
+
+			protocol = Code.EXITROOM;
+
+			String result = toSend(msg, id, roomName);
+
+			// server로 전송
+			pw.println(result);
+			pw.flush();
+
+		} catch (
+
+		IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public String toSend(String msg, String id, String room) {
 		String result = msg;

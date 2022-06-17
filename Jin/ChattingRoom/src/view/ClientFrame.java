@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,7 +33,7 @@ public class ClientFrame extends JFrame implements WindowListener, ActionListene
 	public DefaultTableModel model1, model2;
 	JTextField textRoomNameInput;
 	JTextArea textArea;
-	JButton btnCreateRoom, btnEnter;
+	JButton btnCreateRoom, btnEnter, btnExit;
 	JScrollBar bar;
 
 	public static String roomName = "";
@@ -46,6 +47,8 @@ public class ClientFrame extends JFrame implements WindowListener, ActionListene
 		crf = new ClientRoomFrame(socket);
 
 		new IdFrame(this, crf);
+		
+//		this.getContentPane().setBackground(new Color(198, 220, 228));
 
 		String[] col1 = { "방이름", "ID" };
 		String[][] row1 = new String[0][2];
@@ -82,6 +85,8 @@ public class ClientFrame extends JFrame implements WindowListener, ActionListene
 		roomName = textRoomNameInput.getText();
 
 		btnCreateRoom = new JButton("방 만들기");
+//		btnCreateRoom.setBackground(new Color(242, 209, 209));
+		btnCreateRoom.setBorderPainted(false);
 		btnCreateRoom.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (textRoomNameInput.getText().trim().equals(""))
@@ -97,6 +102,8 @@ public class ClientFrame extends JFrame implements WindowListener, ActionListene
 		});
 
 		btnEnter = new JButton("입장");
+//		btnEnter.setBackground(new Color(242, 209, 209));
+		btnEnter.setBorderPainted(false);
 		btnEnter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int row = table1.getSelectedRow();
@@ -112,6 +119,16 @@ public class ClientFrame extends JFrame implements WindowListener, ActionListene
 				crf.setVisible(true);
 			}
 		});
+		
+		btnExit = new JButton("종료");
+		btnExit.setBackground(new Color(244, 124, 124));
+		btnExit.setBorderPainted(false);
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				wc.Exit();
+				System.exit(0);
+			}
+		});
 
 		// 배치
 		setLayout(null);
@@ -125,10 +142,11 @@ public class ClientFrame extends JFrame implements WindowListener, ActionListene
 		add(textRoomNameInput);
 
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new GridLayout(1, 2, 20, 20));
+		buttonPanel.setLayout(new GridLayout(1, 3, 20, 20));
 
 		buttonPanel.add(btnCreateRoom);
 		buttonPanel.add(btnEnter);
+		buttonPanel.add(btnExit);
 		buttonPanel.setBounds(10, 460, 300, 50);
 		add(buttonPanel);
 
@@ -158,6 +176,7 @@ public class ClientFrame extends JFrame implements WindowListener, ActionListene
 	@Override
 	public void windowClosed(WindowEvent e) {
 		// TODO Auto-generated method stub
+		wc.Exit();
 		System.exit(0);
 
 	}

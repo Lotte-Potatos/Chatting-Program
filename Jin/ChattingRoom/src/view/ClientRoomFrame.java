@@ -22,7 +22,7 @@ public class ClientRoomFrame extends JFrame implements WindowListener, ActionLis
 
 	public Socket socket;
 	WriteClass wc;
-	
+
 	public static String roomName = "";
 
 	public JTextField textInput = new JTextField(20);
@@ -41,6 +41,8 @@ public class ClientRoomFrame extends JFrame implements WindowListener, ActionLis
 		this.socket = socket;
 		this.wc = new WriteClass(socket, this);
 
+//		this.getContentPane().setBackground(new Color(198, 220, 228));
+
 		JScrollPane scrPane = new JScrollPane(textChatArea);
 		scrPane.setPreferredSize(new Dimension(200, 120));
 
@@ -56,13 +58,18 @@ public class ClientRoomFrame extends JFrame implements WindowListener, ActionLis
 		add("South", panel);
 
 		btnTransfer.addActionListener(this);
+//		btnTransfer.setBackground(new Color(255, 230, 230));
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				textChatArea.setText("");
 				textInput.setText("");
+				wc.ExitRoom(roomName);
 				setVisible(false);
 			}
 		});
+		btnExit.setBackground(new Color(244, 124, 124));
+		btnTransfer.setBorderPainted(false);
+		btnExit.setBorderPainted(false);
 
 		setBounds(400, 300, 450, 600);
 
@@ -105,6 +112,7 @@ public class ClientRoomFrame extends JFrame implements WindowListener, ActionLis
 	public void windowClosed(WindowEvent e) {
 		// TODO Auto-generated method stub
 		textChatArea.setText("");
+		wc.ExitRoom(roomName);
 		setVisible(false);
 
 	}

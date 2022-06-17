@@ -13,7 +13,7 @@ public class MainClass {
 	public static void main(String[] args) {
 
 		try {
-			Socket socket = new Socket("192.168.219.106", PORT);
+			Socket socket = new Socket("192.168.0.95", PORT);
 			System.out.println("connection success!");
 			ClientFrame cf = new ClientFrame(socket);
 
