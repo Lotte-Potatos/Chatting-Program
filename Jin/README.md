@@ -10,6 +10,8 @@ id를 등록하고 전체 채팅방 로비에 입장할 수 있다. <br>
 
 같은 채팅방의 입장한 사용자간의 채팅이 가능하다. <br>
 
+exit을 눌러서 퇴장할 경우 접속중인 id에서 제거된다. <br>
+
 <br>
 
 ## 개발 기간
@@ -83,22 +85,23 @@ Server(ServerThread - readRecieve())와 Client(ReadThread - readRecieve())에서
 
 <br>
 
-![image](https://user-images.githubusercontent.com/49184115/174019256-eb578f33-f335-48b4-8875-8b3887928b19.png)
+![image](https://user-images.githubusercontent.com/49184115/174216026-6bc5ce25-def3-4c0f-8147-2bc6bc48de26.png)
 전체 채팅방 목록을 확인할 수 있는 전체 채팅방 로비
 
 <br>
 
-![image](https://user-images.githubusercontent.com/49184115/174019294-e6fbe831-61d9-4921-bd57-26c92ac6fa22.png)
+![image](https://user-images.githubusercontent.com/49184115/174216052-f5ae795f-ac96-4a91-af3f-920318f5a793.png)
+![image](https://user-images.githubusercontent.com/49184115/174216099-2f3e13e4-9a34-40df-8c44-9ea6dfc604b6.png)
 방만들기가 가능하고 만들어진 방에 입장이 가능하다.
 
 <br>
 
-![image](https://user-images.githubusercontent.com/49184115/174019309-4ce04e50-6476-443b-a09a-63268ce19345.png)
+![image](https://user-images.githubusercontent.com/49184115/174216075-9089c6ac-0cb8-4460-9f03-985e2a106d89.png)
 개인 채팅방의 모습이다.
 
 <br>
 
-![image](https://user-images.githubusercontent.com/49184115/174019770-aaac2819-ba9a-4d8b-94a5-ada2e26979a2.png)
+![image](https://user-images.githubusercontent.com/49184115/174216202-2436844d-817b-4706-912a-67d72c10c1e1.png)
 같은 채팅방 내의 유저끼리 채팅을 진행할 수 있다.
 
 <br>
