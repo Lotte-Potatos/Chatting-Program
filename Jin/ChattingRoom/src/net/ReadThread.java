@@ -12,8 +12,6 @@ import java.util.Vector;
 import dto.ChatRoom;
 
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
-
 import view.ClientFrame;
 import view.ClientRoomFrame;
 import view.IdFrame;
@@ -44,8 +42,6 @@ public class ReadThread extends Thread {
 				if (str == null) {
 					System.out.println("접속끊김");
 				}
-
-				System.out.println("run str : " + str);
 
 				// 채팅방 목록 테이블에 추가
 				cf.model1.setRowCount(0);
@@ -132,7 +128,6 @@ public class ReadThread extends Thread {
 			List<String> temp = new ArrayList<String>();
 			while (stk.hasMoreTokens()) {
 				String newId = stk.nextToken();
-				System.out.println("newId: " + newId);
 				temp.add(newId);
 			}
 

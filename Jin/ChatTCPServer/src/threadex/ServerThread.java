@@ -187,7 +187,7 @@ public class ServerThread extends Thread {
 
 								writer.println(initUser);
 								writer.flush();
-								System.out.println("initUser" + initUser);
+								System.out.println("initUser : " + initUser);
 								break;
 							}
 
@@ -216,7 +216,8 @@ public class ServerThread extends Thread {
 
 									writer.println(initChatResult);
 									writer.flush();
-									System.out.println("initChatResult" + initChatResult);
+									System.out.println(
+											"initChatResult : " + initChatResult);
 									break;
 								}
 								Thread.sleep(300);
